@@ -4,7 +4,8 @@ require("dotenv").config();
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");   // 👈 add here
-
+const problemRoutes = require("./routes/problemRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
 const app = express();
 
 // connect database
@@ -15,6 +16,8 @@ app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);   // 👈 add here
+app.use("/api/problems", problemRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Running");
