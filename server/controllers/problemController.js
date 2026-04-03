@@ -16,14 +16,21 @@ exports.createProblem = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
-// Get all problems
+// Get all problems with filtering
 exports.getAllProblems = async (req, res) => {
   try {
 
-    const problems = await Problem.find();
+    const { difficulty, topic, page = 1, limit = 10 } = req.query;
+
+    let filter = {};
+
+    if (difficulty) filter.difficulty = difficulty;
+    if (topic) filter.topic = topic;
+
+    const problems = await Problem
+      .find(filter)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
 
     res.json(problems);
 
@@ -31,9 +38,6 @@ exports.getAllProblems = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
 // Get single problem by ID
 exports.getProblemById = async (req, res) => {
   try {
